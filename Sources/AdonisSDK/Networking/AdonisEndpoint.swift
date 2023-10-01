@@ -38,9 +38,11 @@ extension AdonisEndpoint: Endpoint {
     }
     
     var body: [String : Any]? {
+        let bundleID = Bundle.main.bundleIdentifier ?? ""
         switch self {
+        case .check:
+            return ["bundle": bundleID]
         case .clickEvent(let id):
-            let bundleID = Bundle.main.bundleIdentifier ?? ""
             return ["id": id, "bundle": bundleID]
         default:
             return nil
