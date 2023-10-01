@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "httpkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kemalturk/HttpKit.git",
+      "state" : {
+        "revision" : "b41555b6e998ceec9f2b2be77b944ab256747dcf",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "sdwebimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImage.git",
+      "state" : {
+        "revision" : "936f1c7067728d16c362ba4fb93c17df78b5fd79",
+        "version" : "5.18.2"
+      }
+    }
+  ],
+  "version" : 2
+}
