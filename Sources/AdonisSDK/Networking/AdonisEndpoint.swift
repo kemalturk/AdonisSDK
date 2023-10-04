@@ -34,6 +34,10 @@ extension AdonisEndpoint: Endpoint {
         }
     }
     
+    var header: [String : String]? {
+        ["Api-Key": API_KEY]
+    }
+    
     var query: [String : String]? {
         switch self {
         case .view:
