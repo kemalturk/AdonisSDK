@@ -9,14 +9,14 @@ import Foundation
 import HttpKit
 
 protocol AdonisClient {
-    func check() async -> FetchState<CheckResponse>
+    func view() async -> FetchState<ViewResponse>
     func sendClickEvent(id: String) async -> FetchState<String>
 }
 
 struct AdonisHttpClient: HTTPClient, AdonisClient {
     
-    func check() async -> FetchState<CheckResponse> {
-        await sendRequest(endpoint: AdonisEndpoint.check).toFetchState()
+    func view() async -> FetchState<ViewResponse> {
+        await sendRequest(endpoint: AdonisEndpoint.view).toFetchState()
     }
     
     func sendClickEvent(id: String) async -> FetchState<String> {

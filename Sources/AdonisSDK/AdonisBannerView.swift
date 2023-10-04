@@ -15,7 +15,7 @@ public class AdonisBannerView: UIView {
     private let client: AdonisClient = AdonisHttpClient()
     
     private var heightConstraint: NSLayoutConstraint?
-    private var response: CheckResponse?
+    private var response: ViewResponse?
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
@@ -48,15 +48,13 @@ public class AdonisBannerView: UIView {
     
     private func fetch() {
         Task {
-            let result = await client.check()
+            let result = await client.view()
             self.response = result.value
-            guard let response else { return }
-            
-            let imageUrl = "http://\(BASE_URL)/view/\(response.id ?? "")"
-            
+            guard let image = response?.image else { return }
+                        
             await MainActor.run {
-                heightConstraint?.constant = 100
-                imageView.sd_setImage(with: URL(string: imageUrl))
+                heightConstraint?.constant = 80
+                imageView.sd_setImage(with: URL(string: image))
                 superview?.layoutIfNeeded()
             }
         }

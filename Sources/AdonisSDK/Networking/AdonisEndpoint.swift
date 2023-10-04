@@ -10,8 +10,7 @@ import HttpKit
 
 
 enum AdonisEndpoint {
-    case check
-    case view(id: String)
+    case view
     case clickEvent(id: String)
 }
 
@@ -19,10 +18,8 @@ extension AdonisEndpoint: Endpoint {
     
     var path: String {
         switch self {
-        case .check:
-            return "/check"
-        case .view(let id):
-            return "/view/\(id)"
+        case .view:
+            return "/view"
         case .clickEvent:
             return "/click-event"
         }
@@ -30,19 +27,27 @@ extension AdonisEndpoint: Endpoint {
     
     var method: RequestMethod {
         switch self {
-        case .check, .clickEvent:
+        case .clickEvent:
             return .post
         case .view:
             return .get
         }
     }
     
-    var body: [String : Any]? {
-        let bundleID = Bundle.main.bundleIdentifier ?? ""
+    var query: [String : String]? {
         switch self {
-        case .check:
+        case .view:
+            let bundleID = Bundle.main.bundleIdentifier ?? ""
             return ["bundle": bundleID]
+        default:
+            return nil
+        }
+    }
+    
+    var body: [String : Any]? {
+        switch self {
         case .clickEvent(let id):
+            let bundleID = Bundle.main.bundleIdentifier ?? ""
             return ["id": id, "bundle": bundleID]
         default:
             return nil
