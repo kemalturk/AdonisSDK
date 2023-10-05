@@ -12,4 +12,10 @@ struct ViewResponse: Decodable {
     let id: String?
     let image: String?
     let url: String?
+    let appID: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id, image, url
+        case appID = "app_id"
+    }
 }

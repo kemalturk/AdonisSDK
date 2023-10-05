@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SDWebImage
+import StoreKit
 
 
 public class AdonisBannerView: UIView {
@@ -80,9 +81,22 @@ public class AdonisBannerView: UIView {
         guard let id = response?.id, let url = URL(string: response?.url ?? "") else { return }
         
         Task { await client.sendClickEvent(id: id) }
-        
+
         if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url)
+            if let appID = response?.appID {
+                let storeViewController = SKStoreProductViewController()
+                let parameters = [SKStoreProductParameterITunesItemIdentifier: appID]
+                storeViewController.loadProduct(withParameters: parameters) { _, err in
+                    if err != nil {
+                        UIApplication.shared.open(url)
+                    } else {
+                        let keyWindow = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) ?? UIApplication.shared.windows.first
+                        keyWindow?.rootViewController?.present(storeViewController, animated: true)
+                    }
+                }
+            } else {
+                UIApplication.shared.open(url)
+            }
         }
     }
     
