@@ -14,8 +14,10 @@ public class AdonisBannerView: UIView {
     
     private let client: AdonisClient = AdonisHttpClient()
     
+    private var timer: Timer?
     private var heightConstraint: NSLayoutConstraint?
     private var response: ViewResponse?
+    
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
@@ -25,11 +27,18 @@ public class AdonisBannerView: UIView {
         return imageView
     }()
     
+    public weak var delegate: AdonisBannerViewDelegate?
+    
     public init() {
         super.init(frame: .zero)
         
-        fetch()
         setupLayout()
+        fetch()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        
+        startTimer()
     }
     
     required init?(coder: NSCoder) {
@@ -56,8 +65,14 @@ public class AdonisBannerView: UIView {
                 heightConstraint?.constant = 80
                 imageView.sd_setImage(with: URL(string: image))
                 superview?.layoutIfNeeded()
+                
+                delegate?.didLoad()
             }
         }
+    }
+    
+    private func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 45, target: self, selector: #selector(timerFired), userInfo: nil, repeats: true)
     }
     
     @objc
@@ -69,6 +84,21 @@ public class AdonisBannerView: UIView {
         if UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)
         }
+    }
+    
+    @objc
+    private func didEnterBackground() {
+        timer?.invalidate()
+    }
+    
+    @objc
+    private func willEnterForeground() {
+        startTimer()
+    }
+    
+    @objc
+    private func timerFired() {
+        fetch()
     }
     
 }
