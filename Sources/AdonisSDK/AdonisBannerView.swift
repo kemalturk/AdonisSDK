@@ -13,6 +13,10 @@ import StoreKit
 
 public class AdonisBannerView: UIView {
     
+    enum Constants {
+        static let height: CGFloat = 50
+    }
+    
     private let client: AdonisClient = AdonisHttpClient()
     
     private var timer: Timer?
@@ -63,7 +67,7 @@ public class AdonisBannerView: UIView {
             guard let image = response?.image else { return }
                         
             await MainActor.run {
-                heightConstraint?.constant = 80
+                heightConstraint?.constant = Constants.height
                 imageView.sd_setImage(with: URL(string: image))
                 superview?.layoutIfNeeded()
                 
