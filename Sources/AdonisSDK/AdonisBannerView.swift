@@ -14,7 +14,6 @@ import StoreKit
 public class AdonisBannerView: UIView {
     
     enum Constants {
-        static let height: CGFloat = 50
     }
     
     private let client: AdonisClient = AdonisHttpClient()
@@ -27,7 +26,6 @@ public class AdonisBannerView: UIView {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = .black
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -67,7 +65,7 @@ public class AdonisBannerView: UIView {
             guard let image = response?.image else { return }
                         
             await MainActor.run {
-                heightConstraint?.constant = Constants.height
+                heightConstraint?.constant = AdonisSDK.BANNER_HEIGHT
                 imageView.sd_setImage(with: URL(string: image))
                 superview?.layoutIfNeeded()
                 
