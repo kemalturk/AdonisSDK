@@ -6,10 +6,11 @@
 //
 
 import Foundation
-import UIKit
 import SDWebImage
 import StoreKit
 
+#if os(iOS)
+import UIKit
 
 public class AdonisBannerView: UIView {
     
@@ -118,3 +119,6 @@ public class AdonisBannerView: UIView {
     }
     
 }
+#else
+#endif
+
